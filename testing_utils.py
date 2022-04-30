@@ -66,10 +66,13 @@ class FuncionSigmoidea(PosibilidadFuncionActivacionAbstract):
 class FuncionEscalon(PosibilidadFuncionActivacionAbstract):
   def getG(self, tipoDato: str) -> Callable[[float], float]:
     if tipoDato == 'binario':
-      return np.sign
+      return lambda x: (np.sign(x) + 1)/2
     if tipoDato == 'bipolar':
-      return lambda x: np.sign(x)
-    raise Exception('El tipo de dato ' + tipoDato + ' no existe') 
+      return np.sign
+    raise Exception('El tipo de dato ' + tipoDato + ' no existe')
+
+  def getdGdx(self, tipoDato: str) -> Callable[[np.ndarray], np.ndarray]:
+    return lambda x: 1
 
   def getName(self):
     return 'Funcion de Activación Escalón'
