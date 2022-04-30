@@ -38,7 +38,10 @@ posibilidadesUmbral: List[PosibilidadUmbralAbstract] = [SinUmbral(), ConUmbral()
 class PosibilidadFuncionActivacionAbstract:
   def getG(self, tipoDato: str) -> Callable[[float], float]:
     pass
-  
+
+  def getdGdx(self, tipoDato: str) -> Callable[[np.ndarray], np.ndarray]:
+    pass
+
   def getName(self) -> str:
     pass
 
@@ -49,6 +52,13 @@ class FuncionSigmoidea(PosibilidadFuncionActivacionAbstract):
     if tipoDato == 'bipolar':
       return np.tanh
     raise Exception('El tipo de dato ' + tipoDato + ' no existe') 
+
+  def getdGdx(self, tipoDato: str) -> Callable[[np.ndarray], np.ndarray]:
+    if tipoDato == 'binario':
+      return lambda x: x*(1-x)
+    if tipoDato == 'bipolar':
+      return lambda x: 1 - np.square(x)
+    raise Exception('El tipo de dato ' + tipoDato + ' no existe')
 
   def getName(self):
     return 'Funcion de Activación Sigmoidea'
